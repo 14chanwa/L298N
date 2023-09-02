@@ -7,8 +7,9 @@
 
 typedef void (*CallBackFunction)();
 
-L298N::L298N(uint8_t pinEnable, uint8_t pinIN1, uint8_t pinIN2) {
+L298N::L298N(uint8_t pinEnable, uint8_t pinIN1, uint8_t pinIN2, uint8_t pwmChannel) {
   _pinEnable = pinEnable;
+  _pwmChannel = pwmChannel;
   _pinIN1 = pinIN1;
   _pinIN2 = pinIN2;
   _pwmVal = 100;
@@ -17,24 +18,26 @@ L298N::L298N(uint8_t pinEnable, uint8_t pinIN1, uint8_t pinIN2) {
   _lastMs = 0;
   _direction = STOP;
 
-  pinMode(_pinEnable, OUTPUT);
+  // pinMode(_pinEnable, OUTPUT);
+  ledcAttachPin(_pinEnable, pwmChannel);
+  ledcSetup(pwmChannel, 800, 8);
   pinMode(_pinIN1, OUTPUT);
   pinMode(_pinIN2, OUTPUT);
 }
 
-L298N::L298N(uint8_t pinIN1, uint8_t pinIN2) {
-  _pinEnable = -1;
-  _pinIN1 = pinIN1;
-  _pinIN2 = pinIN2;
-  _pwmVal = 255;  // It's always at the max speed due to jumper on module
-  _isMoving = false;
-  _canMove = true;
-  _lastMs = 0;
-  _direction = STOP;
+// L298N::L298N(uint8_t pinIN1, uint8_t pinIN2) {
+//   _pinEnable = -1;
+//   _pinIN1 = pinIN1;
+//   _pinIN2 = pinIN2;
+//   _pwmVal = 255;  // It's always at the max speed due to jumper on module
+//   _isMoving = false;
+//   _canMove = true;
+//   _lastMs = 0;
+//   _direction = STOP;
 
-  pinMode(_pinIN1, OUTPUT);
-  pinMode(_pinIN2, OUTPUT);
-}
+//   pinMode(_pinIN1, OUTPUT);
+//   pinMode(_pinIN2, OUTPUT);
+// }
 
 void L298N::setSpeed(unsigned short pwmVal) {
   _pwmVal = pwmVal;
@@ -48,7 +51,7 @@ void L298N::forward() {
   digitalWrite(_pinIN1, HIGH);
   digitalWrite(_pinIN2, LOW);
 
-  analogWrite(_pinEnable, _pwmVal);
+  ledcWrite(_pwmChannel, _pwmVal);
 
   _direction = FORWARD;
   _isMoving = true;
@@ -58,7 +61,7 @@ void L298N::backward() {
   digitalWrite(_pinIN1, LOW);
   digitalWrite(_pinIN2, HIGH);
 
-  analogWrite(_pinEnable, _pwmVal);
+  ledcWrite(_pwmChannel, _pwmVal);
 
   _direction = BACKWARD;
   _isMoving = true;
@@ -133,7 +136,7 @@ void L298N::stop() {
   digitalWrite(_pinIN1, LOW);
   digitalWrite(_pinIN2, LOW);
 
-  analogWrite(_pinEnable, 255);
+  ledcWrite(_pwmChannel, 255);
 
   _direction = STOP;
   _isMoving = false;

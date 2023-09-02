@@ -15,8 +15,8 @@ public:
       STOP = -1
    } Direction;
 
-   L298N(uint8_t pinEnable, uint8_t pinIN1, uint8_t pinIN2);
-   L298N(uint8_t pinIN1, uint8_t pinIN2);
+   L298N(uint8_t pinEnable, uint8_t pinIN1, uint8_t pinIN2, uint8_t pwmChannel);
+   // L298N(uint8_t pinIN1, uint8_t pinIN2);
    void setSpeed(unsigned short pwmVal);
    unsigned short getSpeed();
    void forward();
@@ -35,6 +35,7 @@ public:
 
 private:
    byte _pinEnable;
+   uint8_t _pwmChannel;
    byte _pinIN1;
    byte _pinIN2;
    byte _pwmVal;

@@ -13,13 +13,15 @@ public:
        uint8_t pinEnable_A,
        uint8_t pinIN1_A,
        uint8_t pinIN2_A,
+       uint8_t pwmChannel_A,
        uint8_t pinEnable_B,
        uint8_t pinIN1_B,
-       uint8_t pinIN2_B);
-   L298NX2(uint8_t pinIN1_A,
-           uint8_t pinIN2_A,
-           uint8_t pinIN1_B,
-           uint8_t pinIN2_B);
+       uint8_t pinIN2_B,
+       uint8_t pwmChannel_B);
+   // L298NX2(uint8_t pinIN1_A,
+   //         uint8_t pinIN2_A,
+   //         uint8_t pinIN1_B,
+   //         uint8_t pinIN2_B);
 
    //MOTOR A
    void setSpeedA(unsigned short pwmVal_A);

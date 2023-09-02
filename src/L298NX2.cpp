@@ -14,31 +14,35 @@ typedef void (*CallBackFunction)();
 L298NX2::L298NX2(uint8_t pinEnable_A,
                  uint8_t pinIN1_A,
                  uint8_t pinIN2_A,
+                 uint8_t pwmChannel_A,
                  uint8_t pinEnable_B,
                  uint8_t pinIN1_B,
-                 uint8_t pinIN2_B) : _motorA(pinEnable_A,
+                 uint8_t pinIN2_B,
+                 uint8_t pwmChannel_B) : _motorA(pinEnable_A,
                                              pinIN1_A,
-                                             pinIN2_A),
+                                             pinIN2_A,
+                                             pwmChannel_A),
                                      _motorB(pinEnable_B,
                                              pinIN1_B,
-                                             pinIN2_B)
+                                             pinIN2_B,
+                                             pwmChannel_B)
 {
   _canMove = true;
   _lastMs = 0;
 }
 
-L298NX2::L298NX2(uint8_t pinIN1_A,
-                 uint8_t pinIN2_A,
-                 uint8_t pinIN1_B,
-                 uint8_t pinIN2_B) : _motorA(pinIN1_A,
-                                             pinIN2_A),
-                                     _motorB(
-                                         pinIN1_B,
-                                         pinIN2_B)
-{
-  _canMove = true;
-  _lastMs = 0;
-}
+// L298NX2::L298NX2(uint8_t pinIN1_A,
+//                  uint8_t pinIN2_A,
+//                  uint8_t pinIN1_B,
+//                  uint8_t pinIN2_B) : _motorA(pinIN1_A,
+//                                              pinIN2_A),
+//                                      _motorB(
+//                                          pinIN1_B,
+//                                          pinIN2_B)
+// {
+//   _canMove = true;
+//   _lastMs = 0;
+// }
 
 void trace(String msg)
 {
